@@ -30,4 +30,6 @@ const usersSlice = createSlice({
 });
 
 export const selectAllUsers = (state) => state.users; //state.users defined in store.js
+export const selectUserById = (state, userId) =>
+    state.users.find((user) => user.id === userId);
 export default usersSlice.reducer;
