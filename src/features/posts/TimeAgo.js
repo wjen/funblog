@@ -5,12 +5,7 @@ const TimeAgo = ({ timestamp }) => {
     let timeAgo = '';
     if (timestamp) {
         const date = parseISO(timestamp);
-        console.log('🚀 ~ file: TimeAgo.js:8 ~ TimeAgo ~ date:', date);
         const timePeriod = formatDistanceToNow(date);
-        console.log(
-            '🚀 ~ file: TimeAgo.js:10 ~ TimeAgo ~ timePeriod:',
-            timePeriod
-        );
         timeAgo = `${timePeriod} ago`;
     }
     return (

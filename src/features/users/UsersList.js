@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const UsersList = () => {
     const users = useSelector(selectAllUsers);
+    console.log('🚀 ~ file: UsersList.js:8 ~ UsersList ~ users:', users);
     const renderedUsers = users.map((user) => (
         <li key={user.id}>
             <Link to={`/user/${user.id}`}>{user.name}</Link>
