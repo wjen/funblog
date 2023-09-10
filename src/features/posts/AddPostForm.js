@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 // import { addNewPost } from './postsSlice';
-import { selectAllUsers } from '../users/usersSlice';
+// import { selectAllUsers } from '../users/usersSlice';
 import { useNavigate } from 'react-router-dom';
 
 import { useAddNewPostMutation } from './postsSlice';
-
+import { useGetUsersQuery } from '../users/usersSlice';
 const AddPostForm = () => {
     // const dispatch = useDispatch();
     const [addNewPost, { isLoading }] = useAddNewPostMutation();
@@ -15,8 +15,8 @@ const AddPostForm = () => {
     const [content, setContent] = useState('');
     const [userId, setUserId] = useState('');
 
-    const users = useSelector(selectAllUsers);
-
+    const { data: users, isSuccess } = useGetUsersQuery('getUsers');
+    console.log('🚀 ~ file: AddPostForm.js:19 ~ AddPostForm ~ users:', users);
     const onTitleChanged = (e) => setTitle(e.target.value);
     const onContentChanged = (e) => setContent(e.target.value);
     const onAuthorChanged = (e) => setUserId(e.target.value);
@@ -41,12 +41,14 @@ const AddPostForm = () => {
             // }
         }
     };
-
-    const usersOptions = users.map((user) => (
-        <option key={user.id} value={user.id}>
-            {user.name}
-        </option>
-    ));
+    let usersOptions;
+    if (isSuccess) {
+        usersOptions = users.ids.map((id) => (
+            <option key={id} value={id}>
+                {users.entities[id].name}
+            </option>
+        ));
+    }
 
     return (
         <section>

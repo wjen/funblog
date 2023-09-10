@@ -1,7 +1,7 @@
 import {
     // createSlice,
     // createAsyncThunk,
-    createSelector,
+    // createSelector,
     createEntityAdapter,
 } from '@reduxjs/toolkit';
 import sub from 'date-fns/sub';
@@ -49,6 +49,7 @@ const postsAdapter = createEntityAdapter({
 //     count: 0,
 // };
 const initialState = postsAdapter.getInitialState();
+console.log('🚀 ~ file: postsSlice.js:52 ~ initialState:', initialState);
 // const initialState = postsAdapter.getInitialState({
 //     status: 'idle',
 //     error: null,
@@ -268,6 +269,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                         };
                     return post;
                 });
+                console.log(
+                    '🚀 ~ file: postsSlice.js:271 ~ loadedPosts ~ loadedPosts:',
+                    loadedPosts
+                );
                 return postsAdapter.setAll(initialState, loadedPosts); //does overwrite cache state for full list of post, redux is subscribing to different queries, showin in dev tools, cache state for specific query, normalized state with postAdapter.
             },
             providesTags: (result, error, arg) => {
@@ -337,7 +342,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 const patchResult = dispatch(
                     extendedApiSlice.util.updateQueryData(
                         'getPosts',
-                        undefined,
+                        'getPosts',
                         (draft) => {
                             // The draft is Immer-wrapped and can be mutated like in createslice
                             const post = draft.entities[postId];
@@ -373,21 +378,21 @@ console.log(
 );
 
 // Creates memoized selector
-const selectPostsData = createSelector(
-    selectPostsResult,
-    (postsResult) => postsResult.data //normalized state object with ids & entities
-);
-console.log('🚀 ~ file: postsSlice.js:275 ~ selectPostsData:', selectPostsData);
+// const selectPostsData = createSelector(
+//     selectPostsResult,
+//     (postsResult) => postsResult.data //normalized state object with ids & entities
+// );
+// console.log('🚀 ~ file: postsSlice.js:275 ~ selectPostsData:', selectPostsData);
 
-// getSelectors creates these selectors and we rename them with aliases using destructuring
-export const {
-    selectAll: selectAllPosts,
-    selectById: selectPostById,
-    selectIds: selectPostIds,
-    // Pass in a selector that returns the post slice of state
-} = postsAdapter.getSelectors(
-    (state) => selectPostsData(state) ?? initialState
-); //could be null the first time
+// // getSelectors creates these selectors and we rename them with aliases using destructuring
+// export const {
+//     selectAll: selectAllPosts,
+//     selectById: selectPostById,
+//     selectIds: selectPostIds,
+//     // Pass in a selector that returns the post slice of state
+// } = postsAdapter.getSelectors(
+//     (state) => selectPostsData(state) ?? initialState
+// ); //could be null the first time
 
 // // export const selectAllPosts = (state) => state.posts.posts;
 // export const getPostsStatus = (state) => state.posts.status;

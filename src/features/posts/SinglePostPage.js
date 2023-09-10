@@ -1,21 +1,26 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectPostById } from './postsSlice';
+// import React from 'react';
+// import { useSelector } from 'react-redux';
+// import { selectPostById } from './postsSlice';
 
 import PostAuthor from './PostAuthor';
 import TimeAgo from './TimeAgo';
 import ReactionButtons from './ReactionButtons';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useGetPostsQuery } from './postsSlice';
+
 const SinglePostPage = () => {
     // retrieve postid
     const { postId } = useParams();
 
-    const post = useSelector((state) => selectPostById(state, Number(postId))); //Number for strict equals in postslice
-    console.log(
-        '🚀 ~ file: SinglePostPage.js:15 ~ SinglePostPage ~ post:',
-        post
-    );
+    // const post = useSelector((state) => selectPostById(state, Number(postId))); //Number for strict equals in postslice
+    const { post, isLoading } = useGetPostsQuery('getPosts', {
+        selectFromResult: ({ data, isLoading }) => ({
+            post: data?.entities[postId],
+            isLoading,
+        }),
+    });
+    if (isLoading) return <p>Loading...</p>;
 
     if (!post) {
         return (
@@ -36,7 +41,6 @@ const SinglePostPage = () => {
             <ReactionButtons post={post} />
         </article>
     );
-    return <div>SinglePostPage</div>;
 };
 
 export default SinglePostPage;

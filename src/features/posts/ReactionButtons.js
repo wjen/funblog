@@ -15,6 +15,7 @@ const ReactionButtons = ({ post }) => {
         ([name, emoji]) => {
             return (
                 <button
+                    type="button"
                     key={name}
                     className="reactionButton"
                     onClick={

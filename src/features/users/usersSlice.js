@@ -1,5 +1,5 @@
 // import { createSlice } from '@reduxjs/toolkit';
-import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
+import { createEntityAdapter } from '@reduxjs/toolkit';
 // import { createAsyncThunk } from '@reduxjs/toolkit';
 // import axios from 'axios';
 import { apiSlice } from '../api/apiSlice.js';
@@ -17,6 +17,7 @@ import { apiSlice } from '../api/apiSlice.js';
 // ];
 const usersAdapter = createEntityAdapter();
 const initialState = usersAdapter.getInitialState();
+console.log('🚀 ~ file: usersSlice.js:20 ~ initialState:', initialState);
 
 // export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 //     const response = await axios(USERS_URL);
@@ -46,31 +47,27 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
     }),
 });
-export const { useGetUsersquery } = usersApiSlice;
+export const { useGetUsersQuery } = usersApiSlice;
 
 // returns the query result object
-export const selectUsersResult = usersApiSlice.endpoints.getUsers.select();
-console.log(
-    '🚀 ~ file: usersSlice.js:54 ~ selectUsersResult:',
-    selectUsersResult
-);
+// export const selectUsersResult = usersApiSlice.endpoints.getUsers.select();
 
 // Creates memoized selector
-const selectUsersData = createSelector(
-    selectUsersResult,
-    (usersResult) => usersResult.data // normalized state object with ids& entities
-);
+// const selectUsersData = createSelector(
+//     selectUsersResult,
+//     (usersResult) => usersResult.data // normalized state object with ids& entities
+// );
 
 // getSelectors creates these selectors and we rename them with aliases using destructuring
 
-export const {
-    selectAll: selectAllUsers,
-    selectById: selectUserById,
-    selectIds: selectuserIds,
-    // Pass in a selctor that returns the user slice of state
-} = usersAdapter.getSelectors(
-    (state) => selectUsersData(state) ?? initialState
-);
+// export const {
+//     selectAll: selectAllUsers,
+//     selectById: selectUserById,
+//     selectIds: selectuserIds,
+//     // Pass in a selctor that returns the user slice of state
+// } = usersAdapter.getSelectors(
+//     (state) => selectUsersData(state) ?? initialState
+// );
 // export const selectAllUsers = (state) => state.users; //state.users defined in store.js
 // export const selectUserById = (state, userId) =>
 //     state.users.find((user) => user.id === userId);
